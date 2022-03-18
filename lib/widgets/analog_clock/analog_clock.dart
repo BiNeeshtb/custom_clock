@@ -27,25 +27,24 @@ class _AnalogClockState extends State<AnalogClock> {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(18.0),
-        child: AspectRatio(
-          aspectRatio: 1,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              shape: BoxShape.circle,
-              boxShadow: const [
-                BoxShadow(
-                  offset: Offset(0, 0),
-                  color: Colors.blue,
-                  blurRadius: 64,
-                ),
-              ],
-            ),
-            child: Transform.rotate(
-              angle: -pi / 2,
-              child: CustomPaint(
-                painter: ClockPainter(context, DateTime.now()),
+        child: Container(
+          height: 300,
+          width: 300,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            shape: BoxShape.circle,
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(0, 0),
+                color: Colors.blue,
+                blurRadius: 64,
               ),
+            ],
+          ),
+          child: Transform.rotate(
+            angle: -pi / 2,
+            child: CustomPaint(
+              painter: ClockPainter(context, DateTime.now()),
             ),
           ),
         ),
