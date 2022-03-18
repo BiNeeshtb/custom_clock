@@ -5,12 +5,8 @@ import 'package:custom_clock/model/alarm.dart';
 import 'package:custom_clock/provider/alarm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:timezone/timezone.dart';
-
-import '../main.dart';
 
 class AlarmPage extends StatefulWidget {
   const AlarmPage({Key? key}) : super(key: key);
