@@ -1,9 +1,14 @@
 import 'package:custom_clock/provider/alarm_provider.dart';
+import 'package:custom_clock/provider/themeprovider.dart';
+import 'package:custom_clock/screens/spalshscreen.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/homePage.dart';
 import 'package:flutter/material.dart';
+
+import 'config/routes.dart';
+import 'config/theme.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -34,19 +39,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (ctx) => AlarmProvider()),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Custom Clock',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          fontFamily: 'Poppins',
-        ),
-        home: const HomePage(),
-      ),
-    );
+    return ChangeNotifierProvider(
+        create: (context) => ThemeProvider(),
+        builder: (context, _) {
+          final themeProvider = Provider.of<ThemeProvider>(context);
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (ctx) => AlarmProvider()),
+            ],
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Custom Clock',
+              themeMode: themeProvider.themeMode,
+              theme: Themes.lightTheme,
+              darkTheme: Themes.darkTheme,
+              home: SplashScreen(),
+              routes: Routes.routes,
+            ),
+          );
+        });
   }
 }

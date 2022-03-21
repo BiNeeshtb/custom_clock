@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:custom_clock/config/color_palette.dart';
 import 'package:custom_clock/model/alarm.dart';
 
 import 'package:custom_clock/provider/alarm_provider.dart';
@@ -37,6 +38,7 @@ class _AlarmPageState extends State<AlarmPage> {
   Widget build(BuildContext context) {
     return Consumer<AlarmProvider>(builder: (context, alarm, child) {
       return Scaffold(
+        backgroundColor: ThemeDependencies.scaffoldColor,
         body: alarm.alarmList.isEmpty
             ? const Center(
                 child: Text('No Alarms'),
