@@ -41,7 +41,9 @@ class _AlarmPageState extends State<AlarmPage> {
         backgroundColor: ThemeDependencies.scaffoldColor,
         body: alarm.alarmList.isEmpty
             ? const Center(
-                child: Text('No Alarms'),
+                child: Text('No Alarms',
+                    style: TextStyle(
+                        color: primarycolor, fontWeight: FontWeight.bold)),
               )
             : ListView.builder(
                 itemCount: alarm.alarmList.length,

@@ -4,10 +4,7 @@ import 'package:custom_clock/screens/spalshscreen.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
-import '../screens/homePage.dart';
 import 'package:flutter/material.dart';
-
-import 'config/routes.dart';
 import 'config/theme.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -54,7 +51,6 @@ class MyApp extends StatelessWidget {
               theme: Themes.lightTheme,
               darkTheme: Themes.darkTheme,
               home: SplashScreen(),
-              routes: Routes.routes,
             ),
           );
         });
