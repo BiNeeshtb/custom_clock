@@ -4,6 +4,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class AlarmProvider with ChangeNotifier {
   List<Alarm> _alarmList = [];
@@ -67,14 +69,36 @@ class AlarmProvider with ChangeNotifier {
       DateTime scheduledNotificationDateTime, Alarm alarm) async {
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
-    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
       'alarm_notification',
       'alarm_notification',
-      icon: '@mipmap/ic_launcher',
-      sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
-      largeIcon: DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
-      playSound: true,
+      description: 'This channel is used for important notifications.',
       importance: Importance.max,
+      sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+      playSound: true,
+    );
+
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
+    tz.TZDateTime scheduledDate = tz.TZDateTime(
+        tz.local,
+        scheduledNotificationDateTime.year,
+        scheduledNotificationDateTime.month,
+        scheduledNotificationDateTime.day,
+        scheduledNotificationDateTime.hour,
+        scheduledNotificationDateTime.minute);
+
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      channel.id,
+      channel.name,
+      icon: 'app_icon',
+      sound: channel.sound,
+      largeIcon: DrawableResourceAndroidBitmap('app_icon'),
+      playSound: true,
+      importance: channel.importance,
       priority: Priority.high,
     );
 
@@ -87,12 +111,15 @@ class AlarmProvider with ChangeNotifier {
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.schedule(
+    await flutterLocalNotificationsPlugin.zonedSchedule(
         alarm.id ?? 0,
-        'Alarm at ${DateFormat('hh:mm aa').format(alarm.alarmTime!)}',
+        "Alarm",
         'Time is Up It is ${DateFormat('hh:mm aa').format(alarm.alarmTime!)}',
-        scheduledNotificationDateTime,
-        platformChannelSpecifics);
+        scheduledDate,
+        platformChannelSpecifics,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        androidAllowWhileIdle: true);
   }
 
   Future<void> _removeScheduledAlarm(int id) async {
